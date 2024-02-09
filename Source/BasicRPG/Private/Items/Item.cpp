@@ -5,6 +5,8 @@
 
 #include "Components/SphereComponent.h"
 
+#include "Characters/BasicCharacter.h"
+
 // Sets default values
 AItem::AItem()
 {
@@ -47,11 +49,19 @@ float AItem::TransformedCos()
 
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(OtherActor);
+	if (BasicCharacter)
+	{
+		BasicCharacter->SetOverlappingItem(this);
+	}
 }
 
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(OtherActor);
+	if (BasicCharacter)
+	{
+		BasicCharacter->SetOverlappingItem(nullptr);
+	}
 }
 
