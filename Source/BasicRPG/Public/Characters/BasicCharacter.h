@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "CharacterTypes.h"
 #include "BasicCharacter.generated.h"
+
+
 
 UCLASS()
 class BASICRPG_API ABasicCharacter : public ACharacter
@@ -24,8 +27,11 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
+	void EKeyPressed();
 
 private:
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
 	UPROPERTY(VisibleAnywhere)
 	class USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere)
@@ -34,4 +40,9 @@ private:
 	class UGroomComponent* Hair;
 	UPROPERTY(VisibleAnywhere, Category = Hair)
 	class UGroomComponent* Eyebrows;
+	UPROPERTY(VisibleInstanceOnly)
+	class AItem* OverlappingItem;
+public:
+	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 };

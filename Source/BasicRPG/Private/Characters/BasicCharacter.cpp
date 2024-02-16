@@ -8,6 +8,9 @@
 #include "Camera/CameraComponent.h"
 #include "GroomComponent.h"
 
+#include "Items/Item.h"
+#include "Items/Weapons/Weapon.h"
+
 ABasicCharacter::ABasicCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -56,6 +59,7 @@ void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis(FName("LookUp"), this, &ABasicCharacter::LookUp);
 
 	PlayerInputComponent->BindAction(FName("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(FName("Equip"), EInputEvent::IE_Pressed, this, &ABasicCharacter::EKeyPressed);
 }
 
 void ABasicCharacter::MoveForward(float Value)
@@ -92,5 +96,15 @@ void ABasicCharacter::Turn(float Value)
 void ABasicCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void ABasicCharacter::EKeyPressed()
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
 }
 
