@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GroomComponent.h"
+#include "Animation/AnimMontage.h"
 
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
@@ -60,6 +61,7 @@ void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction(FName("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(FName("Equip"), EInputEvent::IE_Pressed, this, &ABasicCharacter::EKeyPressed);
+	PlayerInputComponent->BindAction(FName("Attack"), EInputEvent::IE_Pressed, this, &ABasicCharacter::Attack);
 }
 
 void ABasicCharacter::MoveForward(float Value)
@@ -105,6 +107,32 @@ void ABasicCharacter::EKeyPressed()
 	{
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
+}
+
+void ABasicCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && AttackMontage)
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+
+		int32 Selection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
 

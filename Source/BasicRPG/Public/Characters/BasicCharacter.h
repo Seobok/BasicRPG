@@ -28,6 +28,7 @@ protected:
 	void Turn(float Value);
 	void LookUp(float Value);
 	void EKeyPressed();
+	void Attack();
 
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
@@ -42,6 +43,9 @@ private:
 	class UGroomComponent* Eyebrows;
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
+	
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
