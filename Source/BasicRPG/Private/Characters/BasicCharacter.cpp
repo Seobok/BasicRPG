@@ -112,12 +112,26 @@ void ABasicCharacter::EKeyPressed()
 
 void ABasicCharacter::Attack()
 {
+	if (CanAttack())
+	{
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+}
+
+bool ABasicCharacter::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+void ABasicCharacter::PlayAttackMontage()
+{
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{
 		AnimInstance->Montage_Play(AttackMontage);
 
-		int32 Selection = FMath::RandRange(0, 1);
+		const int32 Selection = FMath::RandRange(0, 1);
 		FName SectionName = FName();
 		switch (Selection)
 		{
@@ -136,3 +150,7 @@ void ABasicCharacter::Attack()
 	}
 }
 
+void ABasicCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
