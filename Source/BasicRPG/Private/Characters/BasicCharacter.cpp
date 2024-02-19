@@ -66,6 +66,8 @@ void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void ABasicCharacter::MoveForward(float Value)
 {
+	if (ActionState == EActionState::EAS_Attacking) return;
+
 	if (Controller && (Value != 0.f))
 	{
 		const FRotator ControlRotation = GetControlRotation();
@@ -79,6 +81,8 @@ void ABasicCharacter::MoveForward(float Value)
 
 void ABasicCharacter::MoveRight(float Value)
 {
+	if (ActionState == EActionState::EAS_Attacking) return;
+
 	if (Controller && (Value != 0.f))
 	{
 		const FRotator ControlRotation = GetControlRotation();
