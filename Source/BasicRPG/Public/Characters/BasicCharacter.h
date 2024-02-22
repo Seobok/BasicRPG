@@ -31,10 +31,20 @@ protected:
 	void Attack();
 
 	bool CanAttack();
+	bool CanDisarm();
+	bool CanArm();
 
 	void PlayAttackMontage();
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
+
+	void PlayEquipMontage(FName SectionName);
+	UFUNCTION(BlueprintCallable)
+	void Disarm();
+	UFUNCTION(BlueprintCallable)
+	void Arm();
+	UFUNCTION(BlueprintCallable)
+	void FinishEquipping();
 
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
@@ -51,9 +61,13 @@ private:
 	class UGroomComponent* Eyebrows;
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	class AWeapon* EquipedWeapon;
 	
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* AttackMontage;
+	class UAnimMontage* AttackMontage;
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	class UAnimMontage* EquipMontage;
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
