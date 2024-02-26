@@ -37,4 +37,7 @@ private:
 	class USceneComponent* BoxTraceStart;
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* BoxTraceEnd;
+
+public:
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 };

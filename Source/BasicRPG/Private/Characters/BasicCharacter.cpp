@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "GroomComponent.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
 
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
@@ -62,6 +63,14 @@ void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction(FName("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(FName("Equip"), EInputEvent::IE_Pressed, this, &ABasicCharacter::EKeyPressed);
 	PlayerInputComponent->BindAction(FName("Attack"), EInputEvent::IE_Pressed, this, &ABasicCharacter::Attack);
+}
+
+void ABasicCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollsionEnabled)
+{
+	if (EquipedWeapon && EquipedWeapon->GetWeaponBox())
+	{
+		EquipedWeapon->GetWeaponBox()->SetCollisionEnabled(CollsionEnabled);
+	}
 }
 
 void ABasicCharacter::MoveForward(float Value)
